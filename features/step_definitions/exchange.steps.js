@@ -25,32 +25,45 @@ defineSupportCode(function({Given, When, Then, And}) {
   // Write code here that turns the phrase above into concrete actions
   //Code.the_exchange_rate_is_alp_blp(alp,blp);
 
+  /*用以下此方法呼叫testrpc顯示可以部署,
+  但此方法印出datastorage時 datastorage.address是 undefine ,
+  官方文件顯示 等一陣子被mined到就會覆蓋datastorage.address
+  但是我等了很久仍然是沒有出現,且testrpc在transaction送出時就印出contract.address了*/
 
-//用以下此方法呼叫testrpc顯示可以部署,但此方法回傳值卻沒有Contract address//
-  var datastorage = datastorageContract.new({
-    from: web3.eth.accounts[0],
-    data:DataStorage_bytecode,
-    gas: '4700000'
-  });
-  //除非先部署好得到address ex: 0xce0af20cc6da2791de438fb1f95e7c262487869e
-  datastorage = web3.eth.contract(DataStorage_abi).at('0xce0af20cc6da2791de438fb1f95e7c262487869e')
+    var datastorage = datastorageContract.new({
+      from: web3.eth.accounts[0],
+      data:DataStorage_bytecode,
+      gas: '4700000'
+    });
 
-  let result = datastorage.setData('test',{
-    from: web3.eth.coinbase,
-    gas: 44444444
-  })
+    //也就是除非先部署好得到address ex: 0xce0af20cc6da2791de438fb1f95e7c262487869e（copy testrpc上顯示的address來用）
+    //用以下方法取得Contract
+    datastorage = web3.eth.contract(DataStorage_abi).at('0xce0af20cc6da2791de438fb1f95e7c262487869e')
 
-  var event = datastorage.dataSet( (err, result) => {
-    ///這裡面的東西完全不會執行 因為在這裡似乎是沒有return東西
-         if (err !== undefined && err !== null) console.log(err);
-         else {
-           console.log('from:'+result.args.from);
-           console.log('input:'+result.args.input);
-           console.log('timestamp:'+result.args.timestamp);
-           event.stopWatching()
+  /*呼叫.setData 在此因為若寫了callbackfunction 就完全不會執行,
+  故直接這樣呼叫
+  在嘗試去接event*/
+
+    let result = datastorage.setData('test',{
+      from: web3.eth.coinbase,
+      gas: 44444444
+    })
+
+  /*但是這裡不接callback 就完全得不到鏈內資料 因為資料會以result 回傳
+  但透過cucumber執行 web3的callback 時不會回傳任何東西 無法 得到result
+  */
+    var event = datastorage.dataSet( (err, result) => {
+      ///這裡面的東西完全不會執行 因為在這裡似乎是沒有return東西
+           if (err !== undefined && err !== null) console.log(err);
+           else {
+             console.log('from:'+result.args.from);
+             console.log('input:'+result.args.input);
+             console.log('timestamp:'+result.args.timestamp);
+             event.stopWatching()
+           }
          }
-       }
-     )
+       )
+
 
   //console.log(Contract);
 
@@ -119,7 +132,7 @@ defineSupportCode(function({Given, When, Then, And}) {
       else
           callback(null, data);
   }
-  
+
   waitingforyou(function(err,callback) {
     console.log(callback)
   })
