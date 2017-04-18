@@ -13,8 +13,8 @@ const emitter = new EventEmitter()
 
 let datastorage_address
 
-const DataStorage_abi = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', '..','build', 'DataStorage.abi')))
-const DataStorage_bytecode = '0x' + fs.readFileSync(path.resolve(__dirname, '..','..', 'build', 'DataStorage.bin')).toString()
+const DataStorage_abi = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'DataStorage.abi')))
+const DataStorage_bytecode = '0x' + fs.readFileSync(path.resolve(__dirname, 'DataStorage.bin')).toString()
 
 const datastorageContract = web3.eth.contract(DataStorage_abi)
 
@@ -24,67 +24,83 @@ defineSupportCode(function({Given, When, Then, And}) {
 
   // Write code here that turns the phrase above into concrete actions
   //Code.the_exchange_rate_is_alp_blp(alp,blp);
+
+
+//用以下此方法呼叫testrpc顯示可以部署,但此方法回傳值卻沒有Contract address//
+  var datastorage = datastorageContract.new({
+    from: web3.eth.accounts[0],
+    data:DataStorage_bytecode,
+    gas: '4700000'
+  });
+  //除非先部署好得到address ex: 0xce0af20cc6da2791de438fb1f95e7c262487869e
+  datastorage = web3.eth.contract(DataStorage_abi).at('0xce0af20cc6da2791de438fb1f95e7c262487869e')
+
+  let result = datastorage.setData('test',{
+    from: web3.eth.coinbase,
+    gas: 44444444
+  })
+
+  var event = datastorage.dataSet( (err, result) => {
+    ///這裡面的東西完全不會執行 因為在這裡似乎是沒有return東西
+         if (err !== undefined && err !== null) console.log(err);
+         else {
+           console.log('from:'+result.args.from);
+           console.log('input:'+result.args.input);
+           console.log('timestamp:'+result.args.timestamp);
+           event.stopWatching()
+         }
+       }
+     )
+
+  //console.log(Contract);
+
+
+
+
+/*---------以下註解程式碼為：部署Contract,then 呼叫 setData() , then 接收 event : event:dataSet
+並且將接收的資料存進 writeText後 寫入 message.txt----------*/
+/*
   let writeText;
   datastorageContract.new(
      {
        from: web3.eth.accounts[0],
        data:DataStorage_bytecode,
        gas: '4700000'
-     }, function (e, contract){
+     },
+     function (e, contract){
        if(e)console.log(e);
        if (typeof contract.address !== 'undefined') {
           //console.log(web3.eth.getCode(contract.address));
           console.log('Contract mined! address: ' + contract.address );
-           /*datastorage = web3.eth.contract(DataStorage_abi).at(contract.address)
+           datastorage = web3.eth.contract(DataStorage_abi).at(contract.address)
            //console.log(datastorage);
-           console.log('getData():-------------------------------------------');
-           writeText+='getData():-------------------------------------------'
-           datastorage.getData({
+           console.log('setData():-------------------------------------------');
+           writeText='setData():-------------------------------------------'
+           datastorage.setData('test' ,{
                   from: web3.eth.coinbase,
                   gas: 44444444
                 }, (err, txhash) => {
                   if (err !== undefined && err !== null) console.log(err);
                   else {
-                    var event = datastorage.dataGet( (err, result) => {
+                    var event = datastorage.dataSet( (err, result) => {
                       if (err !== undefined && err !== null) console.log(err);
                       else {
                         //console.log('result:');
                         //console.log(result);
                         console.log('from:'+result.args.from);
-                        console.log('owner:'+result.args._owner);
+                        console.log('input:'+result.args.input);
                         console.log('timestamp:'+result.args.timestamp);
-
-                        writeText+='from:'+result.args.from + 'owner:'+result.args._owner + 'timestamp:'+result.args.timestamp
+                        writeText+='\nfrom:'+result.args.from + '\nowner:'+result.args.input + '\ntimestamp:'+result.args.timestamp
                         event.stopWatching()
-                        console.log('setData():-------------------------------------------');
-                        datastorage.setData('test' ,{
-                               from: web3.eth.coinbase,
-                               gas: 44444444
-                             }, (err, txhash) => {
-                               if (err !== undefined && err !== null) console.log(err);
-                               else {
-                                 var event = datastorage.dataSet( (err, result) => {
-                                   if (err !== undefined && err !== null) console.log(err);
-                                   else {
-                                     //console.log('result:');
-                                     //console.log(result);
-                                     console.log('from:'+result.args.from);
-                                     console.log('input:'+result.args.input);
-                                     console.log('timestamp:'+result.args.timestamp);
-                                     writeText+='from:'+result.args.from + 'owner:'+result.args.input + 'timestamp:'+result.args.timestamp
-                                     event.stopWatching()
-                                   }
-                                 })
-                               }
-                             })
-                           }
-                         })
-                       }
-                     })*/
-                   }
-                 })
-                 fs.writeFile('message.txt', 'writeText.js', (err) => {
-                 if (err) throw err;});
+                        fs.writeFile('message.txt', writeText, (err) => {
+                        if (err) throw err;});
+                      }
+                    })
+                  }
+                })
+              }
+            })
+*/
   callback();
   });
 
