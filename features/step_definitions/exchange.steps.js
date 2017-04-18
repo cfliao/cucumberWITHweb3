@@ -108,6 +108,22 @@ defineSupportCode(function({Given, When, Then, And}) {
   // Write code here that turns the phrase above into concrete actions
   //  console.log('originalAlp:'+originalAlp);
   //Code.original_alp_account_of_A_is(originalAlp);
+
+  //像這樣寫就可以
+  function waitingforyou(callback) {
+      /* Do something */
+      data = 'plz run deploy or do something';
+
+      if (!data)
+          callback(new Error('Something\'s Wrong'));
+      else
+          callback(null, data);
+  }
+  
+  waitingforyou(function(err,callback) {
+    console.log(callback)
+  })
+
   callback();
   });
 
