@@ -35,7 +35,7 @@ defineSupportCode(function({Given, When, Then, And}) {
       data:DataStorage_bytecode,
       gas: '4700000'
     });
-
+    console.log(datastorage.transactionHash);
     //也就是除非先部署好得到address ex: 0xce0af20cc6da2791de438fb1f95e7c262487869e（copy testrpc上顯示的address來用）
     //用以下方法取得Contract
     datastorage = web3.eth.contract(DataStorage_abi).at('0x4cca5ba9cef382c6f2961ad075bda5e0a2d2a186')
@@ -44,8 +44,10 @@ defineSupportCode(function({Given, When, Then, And}) {
           from: web3.eth.coinbase,
           gas: 44444444
         })
+        
     var myCallData = datastorage.getData();
     console.log(myCallData);
+
 // myCallData = '0x45ff3ff6000000000004545345345345..'
 
   /*呼叫.setData 在此因為若寫了callbackfunction 就完全不會執行,
