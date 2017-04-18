@@ -38,21 +38,29 @@ defineSupportCode(function({Given, When, Then, And}) {
 
     //也就是除非先部署好得到address ex: 0xce0af20cc6da2791de438fb1f95e7c262487869e（copy testrpc上顯示的address來用）
     //用以下方法取得Contract
-    datastorage = web3.eth.contract(DataStorage_abi).at('0xce0af20cc6da2791de438fb1f95e7c262487869e')
+    datastorage = web3.eth.contract(DataStorage_abi).at('0x4cca5ba9cef382c6f2961ad075bda5e0a2d2a186')
+
+    let result = datastorage.setData('Hi',{
+          from: web3.eth.coinbase,
+          gas: 44444444
+        })
+    var myCallData = datastorage.getData();
+    console.log(myCallData);
+// myCallData = '0x45ff3ff6000000000004545345345345..'
 
   /*呼叫.setData 在此因為若寫了callbackfunction 就完全不會執行,
   故直接這樣呼叫
   在嘗試去接event*/
 
-    let result = datastorage.setData('test',{
+/*    let result = datastorage.setData('test',{
       from: web3.eth.coinbase,
       gas: 44444444
-    })
+    })*/
 
   /*但是這裡不接callback 就完全得不到鏈內資料 因為資料會以result 回傳
   但透過cucumber執行 web3的callback 時不會回傳任何東西 無法 得到result
   */
-    var event = datastorage.dataSet( (err, result) => {
+    /*var event = datastorage.dataSet( (err, result) => {
       ///這裡面的東西完全不會執行 因為在這裡似乎是沒有return東西
            if (err !== undefined && err !== null) console.log(err);
            else {
@@ -62,7 +70,7 @@ defineSupportCode(function({Given, When, Then, And}) {
              event.stopWatching()
            }
          }
-       )
+       )*/
 
 
   //console.log(Contract);
