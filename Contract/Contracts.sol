@@ -19,6 +19,20 @@ contract DataStorage {
 
 	// data 的 setter
 	function setData(string input) {
+
+		// 發射事件
+		dataSet(msg.sender, input, now);
+		data = input;
+
+	}
+
+	// data 的 getter
+	function getData() constant returns (string) {
+		return data;
+	}
+
+	// data 的 setter
+	function set(string input) {
 		data = input;
 
 		// 發射事件
@@ -26,7 +40,7 @@ contract DataStorage {
 	}
 
 	// data 的 getter
-	function getData() constant returns (string) {
+	function get() constant returns (string) {
 		return data;
 	}
 }

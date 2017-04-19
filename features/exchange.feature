@@ -1,26 +1,19 @@
-Feature: Exchange loyalty points between two parties
-  In order to exchange loyalty points between company A and company B
-  As a smart contract
-  I want to exchange loyalty points of A (alp) for loyalty points of B (blp) or
-            exchange loyalty points of B (alp) for loyalty points of A (blp)
-            according to corresponding preset exchanging rate and rules.
+Feature: get function returns from contract
+  In order to get data from ethereum
+  As a user
+  I want to get data from Contract
 
-  Scenario Outline: Company A exchanges alp for blp
-    Given the exchange rate is 1alp=0.5blp
-    And original alp account of A is <alp account orig>
-    And original blp account of A is <blp account orig>
-    And original alp account of B is <alp account orig of B>
-    And original blp account of B is <blp account orig of B>
-    When A want to exchange <alp to exchange> alp for blp
-    Then alp account of A should be <alp account new>
-    And blp account of A should be <blp account new>
-    And alp account of B should be <alp account new of B>
-    And blp account of B should be <blp account new of B>
+  Scenario: deploey Contract
+    Given I have abi and byteCode
+    When I deploey the Contract
+    Then I should get address and write to file successfully
+
+  Scenario Outline: Contract call
+    Given the deployed Contract in ethereum
+    When I call Contract setData function to put <put Data> in ethereum
+    Then I call Contract get Data function to get  <get Data>
 
     Examples:
-    | alp to exchange |  alp account orig | alp account new | blp account orig | blp account new | alp account orig of B | alp account new of B | blp account orig of B | blp account new of B |
-    | 100             |  100              | 0               | 100              | 150             | 100                   | 200                  | 100                   | 50                   |
-    | 20              |  100              | 80              | 100              | 110             | 100                   | 120                  | 100                   | 90                   |
-    | 110             |  100              | 100             | 100              | 100             | 100                   | 100                  | 100                   | 100                  |
-
+    | put Data |  get Data  |
+    | first   |  first    |
  # do we allow floating point alp and blp?
