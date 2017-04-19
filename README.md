@@ -24,5 +24,4 @@
 ### start ###
 
 0. ```testrpc -l 88888888 -p 8545``` or connect to private chain
-1. for debug ```sh start-debug.sh```
-2. Run ```./node_modules/.bin/cucumber-js```
+1. Run ```./node_modules/.bin/cucumber-js```
