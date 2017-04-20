@@ -10,12 +10,12 @@
 	  "contract":"contract/DataStorage.sol"
   }
   ,
-  "devDependencies": { 
+  "devDependencies": {
 	  "cucumber": "2.0.0-rc.9",
 	  "concurrently": "3.2.0",
 	  "solc": "0.4.8"},
   "scripts": {
-	  "solc": "concurrently \"solcjs --optimize --bin -o build contract/Contract.sol\" \"solcjs --optimize --abi -o build contract/Contract.sol\"",	  
+	  "solc": "concurrently \"solcjs --optimize --bin -o ./build ./contract/Contracts.sol\" \"solcjs --optimize --abi -o ./build ./contract/Contracts.sol\"",	  
       "cucumber":"cucumberjs"
   },
   "author": "",
