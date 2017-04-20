@@ -14,11 +14,10 @@
   
 ### compile contract and produce stubs (solcjs@0.4.8)
 
-1. ```cd Contract```
-2. ```mkdir build``` (one time)
-3. ```cd build_script``` 
-4. ```npm install -g solc@0.4.8 && npm install``` (one time)
-5. ```npm run solc```
+1. ```mkdir build``` (one time)
+2. ```cd Contract```
+3. ```npm install``` (one time)
+4. ```npm run solc```
 
 
 ### running cucumber ###
