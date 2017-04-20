@@ -8,20 +8,19 @@
 
   ```npm install -g ethereumjs-testrpc```
 
-2. 執行
+2. 執行Testrpc
 
-  ```testrpc -p 8545 -l 88888888```
+  ```testrpc -p 8545 -l 888888888```
   
-### compile contract and produce stubs (solcjs@0.4.8)
+### compile contract and generate stub (solcjs@0.4.8)
 
-1. ```mkdir build``` (one time)
-2. ```cd Contract```
-3. ```npm install``` (one time)
-4. ```npm run solc```
+1. ```switch to project root dir``` 
+2. ```mkdir build``` (one time)
+3. ```npm run solc```
 
 
-### running cucumber ###
+### execute cucumberjs ###
 
-1. ```testrpc -l 88888888 -p 8545``` or connect to private chain
-2. ```goto root directory```
+1. ```make sure you have run "testrpc -l 888888888 -p 8545"```
+2. ```switch to project root dir```
 3. ```npm run cucumber```
