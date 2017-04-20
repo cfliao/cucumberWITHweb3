@@ -12,7 +12,7 @@
 
   ```testrpc -p 8545 -l 88888888```
   
-### compiler contract (solcjs@0.4.8)
+### compile contract and produce stubs (solcjs@0.4.8)
 
 1. ```cd Contract```
 2. ```mkdir build``` (one time)
@@ -21,7 +21,8 @@
 5. ```npm run solc```
 
 
-### start ###
+### running cucumber ###
 
-0. ```testrpc -l 88888888 -p 8545``` or connect to private chain
-1. Run ```./node_modules/.bin/cucumber-js```
+1. ```testrpc -l 88888888 -p 8545``` or connect to private chain
+2. ```goto root directory```
+3. ```npm run cucumber```
